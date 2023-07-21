@@ -7,30 +7,32 @@ defmodule RandomUserTest do
 
   describe "get_users/0" do
     test "gets a list of users" do
+      user_data = %{"email" => "email"}
+
       expect(RandomUserMock, :get_users, fn results, _page ->
-        {:ok, RandomUser.Result.new([%{"email" => "email"}], results)}
+        {:ok, RandomUser.Result.new([user_data], results)}
       end)
 
       results = 100
       page = 1
 
-      assert {:ok, %RandomUser.Result{amount: ^results, users: users}} =
-               RandomUser.get_users(results, page)
-
-      assert %RandomUser.User{email: "email"} in users
+      assert {:ok, result} = RandomUser.get_users(results, page)
+      assert ^results = RandomUser.Result.amount(result)
+      assert RandomUser.User.new(user_data) in RandomUser.Result.users(result)
     end
 
     # TODO: expand tests
     test "returns a generic error" do
       expect(RandomUserMock, :get_users, fn _results, _page ->
-        {:error, %RandomUser.Error{code: 1, message: "generic"}}
+        {:error, RandomUser.Error.new(nil)}
       end)
 
       results = 100
       page = 1
 
-      assert {:error, %RandomUser.Error{code: 1, message: "generic"}} =
-               RandomUser.get_users(results, page)
+      assert {:error, error} = RandomUser.get_users(results, page)
+      assert 1 == RandomUser.Error.code(error)
+      assert "generic" == RandomUser.Error.message(error)
     end
   end
 end
