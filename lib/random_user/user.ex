@@ -5,10 +5,11 @@ defmodule RandomUser.User do
 
   defstruct [:email]
 
-  @type t :: %__MODULE__{
-          email: String.t() | nil
-        }
+  @opaque t :: %__MODULE__{
+            email: String.t() | nil
+          }
 
+  # TODO: expand User fields
   @spec new(%{String.t() => term()}) :: t()
   def new(data) do
     struct(__MODULE__, email: data["email"])
