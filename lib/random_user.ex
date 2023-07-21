@@ -9,5 +9,5 @@ defmodule RandomUser do
   def get_users(results, page), do: impl().get_users(results, page)
 
   @doc false
-  def impl, do: Application.get_env(:random_user, __MODULE__, RandomUser.API)
+  def impl, do: Application.get_env(:random_user, __MODULE__, RandomUser.Client)
 end

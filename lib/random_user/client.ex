@@ -1,6 +1,6 @@
-defmodule RandomUser.API do
+defmodule RandomUser.Client do
   @moduledoc """
-  API
+  Client
   """
 
   use Tesla
